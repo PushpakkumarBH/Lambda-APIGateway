@@ -8,7 +8,7 @@ just put url and send for 'GET' request
 '''
 
 ## for 'POST' request
-'''
+'''jsx
 {
     "name":"Pushpakkumar",
     "username":"pushpak",
@@ -19,7 +19,7 @@ just put url and send for 'GET' request
 '''
 
 ## for 'PUT' request
-'''
+'''jsx
 {
     "id": 2,
     "updateKey": "name",
@@ -28,7 +28,7 @@ just put url and send for 'GET' request
 '''
 
 ## for 'DELETE' request
-'''
+'''jsx
 {
     "id":2
 }
@@ -36,4 +36,6 @@ just put url and send for 'GET' request
 
 # Try these functions out in this url @
 
+'''jsx
 https://odthc2ri54.execute-api.us-east-1.amazonaws.com/dev/users
+'''
