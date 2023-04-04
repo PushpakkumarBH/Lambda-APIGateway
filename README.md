@@ -34,8 +34,4 @@ just put url and send for 'GET' request
 }
 ```
 
-# Try these functions out in this url @
 
-```jsx
-https://odthc2ri54.execute-api.us-east-1.amazonaws.com/dev/users
-```
