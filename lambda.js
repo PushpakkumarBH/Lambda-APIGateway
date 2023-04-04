@@ -4,7 +4,7 @@ AWS.config.update({
 });
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const userPath='/users';
-const dynamoDBT='users';
+const dynamoDBT='user';
 
 exports.handler = async (event) => {
     let response;
@@ -18,8 +18,7 @@ exports.handler = async (event) => {
             break;
         case 'PUT':
             const requestBody= JSON.parse(event.body);
-            response = await 
-updateuser(requestBody.id,requestBody.updateKey,requestBody.updateValue);
+            response = await updateuser(requestBody.id,requestBody.updateKey,requestBody.updateValue);
             break;
         case 'DELETE':
             response = await deleteuser(JSON.parse(event.body).id);
@@ -50,29 +49,36 @@ async function deleteuser(id){
     })
 }
 
-async function updateuser(id,updateKey,updateValue){
-    const params={
-        TableName:dynamoDBT,
-        Key:{
-            'id':id
+async function updateuser(id, updateKey, updateValue) {
+    const params = {
+        TableName: dynamoDBT,
+        Key: {
+            'id': id
         },
-        updateExpression:'set ${updateKey} = :value',
-        ExpressionAttributeValues:{
+        UpdateExpression: 'set #key = :value',
+        ExpressionAttributeNames: {
+            '#key': updateKey
+        },
+        ExpressionAttributeValues: {
             ':value': updateValue
         },
-        returnValues: 'UPDATED_NEW'
-    }
-    return await dynamodb.update(params).promise().then(response =>{
+        ReturnValues: 'UPDATED_NEW'
+    };
+
+    try {
+        const response = await dynamodb.update(params).promise();
         const body = {
             Operation: 'UPDATE',
             Message: 'SUCCESS',
             Item: response
-        }
-    return buildresponse(200,body);
-    }, (error) =>{
+        };
+        return buildresponse(200, body);
+    } catch (error) {
         console.log(error);
-    })
+        return buildresponse(500, { message: error.message });
+    }
 }
+
 
 async function getuser(data){
     const params={
